@@ -22,25 +22,25 @@ export class App extends React.Component {
     total: 0,
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    const { query, page } = this.state;
+  // componentDidUpdate(prevProps, prevState) {
+  //   const { query, page } = this.state;
 
-    if (prevState.query !== query || prevState.page !== page) {
-      if (query.trim() === '') {
-        this.setState({
-          images: [],
-          loading: true,
-        });
-        return;
-      }
-      this.fetchImages();
-    }
-  }
+  //   if (prevState.query !== query || prevState.page !== page) {
+  //     if (query.trim() === '') {
+  //       this.setState({
+  //         images: [],
+  //         loading: true,
+  //       });
+  //       return;
+  //     }
+  //     this.fetchImages();
+  //   }
+  // }
 
-  componentWillUnmount() {
-    window.removeEventListener('click', this.onToggleModal);
-    window.removeEventListener('click', this.showImage);
-  }
+  // componentWillUnmount() {
+  //   window.removeEventListener('click', this.onToggleModal);
+  //   window.removeEventListener('click', this.showImage);
+  // }
 
   onToggleModal = event => {
     console.log('кликнули toggle модального окна');
