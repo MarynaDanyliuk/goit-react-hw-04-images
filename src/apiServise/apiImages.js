@@ -8,14 +8,11 @@ import axios from 'axios';
 //   },
 // });
 
-export const searchImages = async (query, page) => {
+async function searchImages(query, page) {
   const { data } = await axios.get(
     `https://pixabay.com/api/?q=${query}&page=${page}&key=31808257-b1d1bead71ab6681d9f118ecf&image_type=photo&orientation=horizontal&per_page=12`
   );
-  return data;
-};
+  return data.hits;
+}
 
-// export const getAllImages = async () => {
-//   const { data } = await instance.get('/');
-//   return data;
-// };
+export default searchImages;

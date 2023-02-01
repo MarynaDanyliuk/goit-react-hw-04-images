@@ -13,9 +13,6 @@ import {
 
 export const Searchbar = ({ onSubmit }) => {
   const [query, setQuery] = useState('');
-  // state = {
-  //   query: '',
-  // };
 
   const handleChange = event => {
     const { value } = event.target;
@@ -33,13 +30,7 @@ export const Searchbar = ({ onSubmit }) => {
     // this.props.onSubmit(this.state);
     onSubmit(query);
     setQuery(query);
-    // _________________________
-    // this.reset();
   };
-
-  // const reset = () => {
-  //   this.setState({ query: '' });
-  // };
 
   return (
     <Header>
@@ -63,5 +54,5 @@ export const Searchbar = ({ onSubmit }) => {
 };
 
 Searchbar.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func,
 };

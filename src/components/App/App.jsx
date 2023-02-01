@@ -1,118 +1,136 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 
 import { Container } from '../App/App.styled';
 import { Searchbar } from '../Searchbar/Searchbar';
 import { ImageGallery } from '../ImageGallery/ImageGallery';
-import { Button } from '../Button/Button';
+// import { Button } from '../Button/Button';
 import { LoaderWatch } from '../Loader/Loader';
-import Modal from '../Modal/Modal';
+// import Modal from '../Modal/Modal';
 
-import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
+// import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
 
-import { searchImages } from 'apiServise/apiImages';
+import searchImages from 'apiServise/apiImages';
 
-export class App extends React.Component {
-  state = {
+export const App = () => {
+  const [images, setImages] = useState([]);
+  // const [query, setQuery] = useState('');
+
+  const [state, setState] = useState({
     query: '',
-    images: [],
-    loading: false,
     page: 1,
+    loading: false,
+    total: 0,
     showModal: false,
     imageDetails: null,
-    total: 0,
-  };
+  });
 
-  // componentDidUpdate(prevProps, prevState) {
-  //   const { query, page } = this.state;
-
-  //   if (prevState.query !== query || prevState.page !== page) {
-  //     if (query.trim() === '') {
-  //       this.setState({
-  //         images: [],
-  //         loading: true,
-  //       });
-  //       return;
-  //     }
-  //     this.fetchImages();
-  //   }
-  // }
-
-  // componentWillUnmount() {
-  //   window.removeEventListener('click', this.onToggleModal);
-  //   window.removeEventListener('click', this.showImage);
-  // }
-
-  onToggleModal = event => {
-    console.log('кликнули toggle модального окна');
-    this.setState(({ showModal }) => ({
-      showModal: !showModal,
-    }));
-  };
-
-  async fetchImages() {
-    try {
-      this.setState({ loading: true });
-      const { query, page } = this.state;
-
-      const data = await searchImages(query, page);
-      this.setState({ total: data.totalHits });
-      // console.log(data);
-
-      this.setState(({ images }) => ({ images: [...images, ...data.hits] }));
-    } catch (error) {
-      this.setState('Error');
-    } finally {
-      this.setState({ loading: false });
-    }
-  }
-
-  searchImages = ({ query }) => {
-    if (query === this.state.query) {
-      return;
-    }
-
-    this.setState({ query, images: [], page: 1 });
-    // console.log(`до запроса наш объект`, this.state);
-  };
-
-  onLoadMore = () => {
-    this.setState(prevState => ({ page: prevState.page + 1 }));
-    // console.log(`После запроса, если все ок - наш объект`, this.state);
-  };
-
-  showImage = ({ largeImageURL, webformatURL, id }) => {
-    console.log('кликнули img');
-
-    this.setState({
-      imageDetails: {
-        largeImageURL,
-        webformatURL,
-        id,
-      },
-      showModal: true,
+  const onHandleSubmit = query => {
+    setState({
+      query: query,
     });
   };
 
-  render() {
-    const { images, loading, showModal, total } = this.state;
-    return (
-      <Container>
-        <Searchbar onSubmit={this.searchImages} />
-        {loading && <LoaderWatch />}
-        {images && <ImageGallery images={images} showImage={this.showImage} />}
-        {Boolean(images.length) && images.length < total && (
-          <Button handelClick={this.onLoadMore} />
-        )}
+  useEffect(() => {
+    console.log('запускаем useEffect');
 
-        {showModal && (
-          <Modal handleToggle={() => this.onToggleModal()}>
-            <ImageGalleryItem
-              showImage={() => this.showImage()}
-              {...this.state.imageDetails}
-            />
-          </Modal>
-        )}
-      </Container>
-    );
-  }
-}
+    console.log(state);
+
+    const { page, query } = state;
+
+    if (query === '') {
+      return;
+    }
+    const data = searchImages(query, page);
+    data
+      .then(response => setImages(response))
+      .catch(error => console.log('Error'));
+    // console.log(images);
+  }, [state]);
+
+  return (
+    <Container>
+      <Searchbar onSubmit={onHandleSubmit} />
+      {state.loading && <LoaderWatch />}
+      {images && <ImageGallery images={images} />}
+      {/* {Boolean(images.length) && images.length < total && (
+        <Button handelClick={onLoadMore} />
+      )} */}
+
+      {/* {showModal && (
+        <Modal handleToggle={() => onToggleModal()}>
+          <ImageGalleryItem showImage={() => showImage()} />
+        </Modal>
+      )} */}
+    </Container>
+  );
+};
+
+// const { query, page } = state;
+// fetchImages(query, page);
+// setImages(({ images }) => ({
+//   images: [...images, ...fetchImages(query, page)],
+// }));
+
+// const onLoadMore = () => {
+//   setState(prevState => ({ page: prevState.page + 1 }));
+//   // console.log(`После запроса, если все ок - наш объект`, this.state);
+// };
+
+// const showImage = ({ largeImageURL, webformatURL, id }) => {
+//   console.log('кликнули img');
+
+//   setState({
+//     imageDetails: {
+//       largeImageURL,
+//       webformatURL,
+//       id,
+//     },
+//     showModal: true,
+//   });
+
+// const onToggleModal = event => {
+//   console.log('кликнули toggle модального окна');
+//   setState(({ showModal }) => ({
+//     showModal: !showModal,
+//   }));
+// };
+
+// const { loading, showModal, total } = state;
+// showImage = { showImage };
+// function searchImages (query, page ) {
+//   if (query === state.query) {
+//     return;
+//   }
+//   return setState({ query, page: 1 });
+// };
+
+// useEffect(() => {
+//   const { query, page } = state;
+//   setState({
+//     query: state.query,
+//     page: state.page,
+//   });
+//   const data = searchImages(query, page);
+//   setState({ total: data.totalHits });
+//   setState(({ images }) => ({ images: [...images, ...data.hits] }));
+// }, []);
+
+// componentDidUpdate(prevProps, prevState) {
+//   const { query, page } = this.state;
+
+//   if (prevState.query !== query || prevState.page !== page) {
+//     if (query.trim() === '') {
+//       this.setState({
+//         images: [],
+//         loading: true,
+//       });
+//       return;
+//     }
+//     this.fetchImages();
+//   }
+// }
+
+// componentWillUnmount() {
+//   window.removeEventListener('click', this.onToggleModal);
+//   window.removeEventListener('click', this.showImage);

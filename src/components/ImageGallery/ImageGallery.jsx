@@ -1,10 +1,11 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
 
 import { Gallery } from '../ImageGallery/ImageGallery.styled';
 
 export const ImageGallery = ({ images, showImage }) => {
+  // const { pics } = images;
   return (
     <Gallery>
       {images.map(({ largeImageURL, webformatURL, id }) => (
@@ -19,13 +20,13 @@ export const ImageGallery = ({ images, showImage }) => {
   );
 };
 
-ImageGallery.propTypes = {
-  images: PropTypes.arrayOf(
-    PropTypes.shape({
-      largeImageURL: PropTypes.node,
-      webformatURL: PropTypes.node,
-      id: PropTypes.number,
-    })
-  ),
-  showImage: PropTypes.func.isRequired,
-};
+// ImageGallery.propTypes = {
+//   images: PropTypes.arrayOf(
+//     PropTypes.shape({
+//       largeImageURL: PropTypes.node,
+//       webformatURL: PropTypes.node,
+//       id: PropTypes.number,
+//     })
+//   ),
+//   showImage: PropTypes.func.isRequired,
+// };
