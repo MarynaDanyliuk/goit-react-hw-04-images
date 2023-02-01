@@ -5,7 +5,6 @@ import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
 import { Gallery } from '../ImageGallery/ImageGallery.styled';
 
 export const ImageGallery = ({ images, showImage }) => {
-  // const { pics } = images;
   return (
     <Gallery>
       {images.map(({ largeImageURL, webformatURL, id }) => (

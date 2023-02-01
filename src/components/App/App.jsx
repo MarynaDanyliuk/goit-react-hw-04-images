@@ -14,40 +14,45 @@ import searchImages from 'apiServise/apiImages';
 
 export const App = () => {
   const [images, setImages] = useState([]);
+  const [query, setQuery] = useState('');
+  const [page, setPage] = useState(1);
+  // const [total, setTotal] = useState(0);
 
   const [state, setState] = useState({
-    query: '',
-    page: 1,
     loading: false,
-    total: 0,
+    // total: 0,
     showModal: false,
     imageDetails: null,
   });
   useEffect(() => {
     console.log('запускаем useEffect');
 
-    console.log(state);
-
-    const { page, query } = state;
-
     if (query === '') {
       return;
     }
     const data = searchImages(query, page);
     data
-      .then(response => setImages(response))
+      .then(response => setImages(response.hits))
+      .then(
+        setState({
+          loading: false,
+        })
+      )
       .catch(error => console.log('Error'));
-    // console.log(images);
-  }, [state]);
+  }, [query, page]);
+
   const onHandleSubmit = query => {
+    setQuery(query);
+    setPage(1);
     setState({
-      query: query,
+      loading: true,
     });
   };
 
   const onLoadMore = () => {
-    setState(prevState => ({ page: prevState.page + 1 }));
-    // console.log(`После запроса, если все ок - наш объект`, this.state);
+    setPage(prevState => page + 1);
+
+    console.log('click', page);
   };
 
   return (
@@ -115,7 +120,7 @@ export const App = () => {
 //     page: state.page,
 //   });
 //   const data = searchImages(query, page);
-//   setState({ total: data.totalHits });
+// setState({ total: data.totalHits });
 //   setState(({ images }) => ({ images: [...images, ...data.hits] }));
 // }, []);
 
