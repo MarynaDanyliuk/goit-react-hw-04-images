@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Container } from '../App/App.styled';
 import { Searchbar } from '../Searchbar/Searchbar';
 import { ImageGallery } from '../ImageGallery/ImageGallery';
-// import { Button } from '../Button/Button';
+import { Button } from '../Button/Button';
 import { LoaderWatch } from '../Loader/Loader';
 // import Modal from '../Modal/Modal';
 
@@ -14,7 +14,6 @@ import searchImages from 'apiServise/apiImages';
 
 export const App = () => {
   const [images, setImages] = useState([]);
-  // const [query, setQuery] = useState('');
 
   const [state, setState] = useState({
     query: '',
@@ -24,13 +23,6 @@ export const App = () => {
     showModal: false,
     imageDetails: null,
   });
-
-  const onHandleSubmit = query => {
-    setState({
-      query: query,
-    });
-  };
-
   useEffect(() => {
     console.log('запускаем useEffect');
 
@@ -47,12 +39,23 @@ export const App = () => {
       .catch(error => console.log('Error'));
     // console.log(images);
   }, [state]);
+  const onHandleSubmit = query => {
+    setState({
+      query: query,
+    });
+  };
+
+  const onLoadMore = () => {
+    setState(prevState => ({ page: prevState.page + 1 }));
+    // console.log(`После запроса, если все ок - наш объект`, this.state);
+  };
 
   return (
     <Container>
       <Searchbar onSubmit={onHandleSubmit} />
       {state.loading && <LoaderWatch />}
       {images && <ImageGallery images={images} />}
+      {Boolean(images.length) && <Button handelClick={onLoadMore} />}
       {/* {Boolean(images.length) && images.length < total && (
         <Button handelClick={onLoadMore} />
       )} */}
