@@ -12,17 +12,18 @@ import {
 } from '../Searchbar/Searchbar.styled';
 
 export const Searchbar = ({ onSubmit }) => {
-  const [query, setQuery] = useState('');
+  const [newQuery, setQuery] = useState('');
 
   const handleChange = event => {
     const { value } = event.target;
-    setQuery(value);
+    const newQuery = value;
+    setQuery(newQuery);
   };
 
   const handleSubmit = event => {
     event.preventDefault();
-    onSubmit(query);
-    setQuery(query);
+    onSubmit(newQuery);
+    setQuery(newQuery);
   };
 
   return (
@@ -38,7 +39,7 @@ export const Searchbar = ({ onSubmit }) => {
           autoFocus
           placeholder="Search images and photos"
           name="query"
-          value={query}
+          value={newQuery}
           onChange={handleChange}
         />
       </SearchForm>

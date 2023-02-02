@@ -28,10 +28,15 @@ export const App = () => {
     if (query === '') {
       return;
     }
+    // setQuery(query);
+    // setImages([]);
+
     const data = searchImages(query, page);
+
     data
       .then(response => {
-        setImages({ ...response.hits });
+        console.log(response);
+        setImages(images => [...images, ...response.hits]);
         setState({
           total: response.totalHits,
         });
@@ -44,12 +49,13 @@ export const App = () => {
       .catch(error => console.log('Error'));
   }, [query, page]);
 
-  const onHandleSubmit = query => {
-    setQuery(query);
+  const onHandleSubmit = newQuery => {
+    setQuery(newQuery);
     setPage(1);
     setState({
       loading: true,
     });
+    setImages([]);
   };
 
   const onLoadMore = () => {
@@ -88,9 +94,7 @@ export const App = () => {
       <Searchbar onSubmit={onHandleSubmit} />
       {state.loading && <LoaderWatch />}
       {images && <ImageGallery images={images} showImage={showImage} />}
-      {Boolean(images.length) && images.length < state.total && (
-        <Button handelClick={onLoadMore} />
-      )}
+      {Boolean(images.length) && <Button handelClick={onLoadMore} />}
 
       {state.showModal && (
         <Modal handleToggle={onToggleModal}>
