@@ -17,17 +17,10 @@ export const Searchbar = ({ onSubmit }) => {
   const handleChange = event => {
     const { value } = event.target;
     setQuery(value);
-    // this.setState({
-    //   [name]: value,
-    // });
   };
 
   const handleSubmit = event => {
     event.preventDefault();
-
-    // ________________________
-    // const { onSubmit } = this.props;
-    // this.props.onSubmit(this.state);
     onSubmit(query);
     setQuery(query);
   };
@@ -54,5 +47,5 @@ export const Searchbar = ({ onSubmit }) => {
 };
 
 Searchbar.propTypes = {
-  onSubmit: PropTypes.func,
+  onSubmit: PropTypes.func.isRequired,
 };
