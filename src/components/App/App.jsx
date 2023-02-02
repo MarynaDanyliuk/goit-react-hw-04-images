@@ -28,6 +28,7 @@ export const App = () => {
     if (query === '') {
       return;
     }
+
     // setQuery(query);
     // setImages([]);
 
@@ -50,6 +51,9 @@ export const App = () => {
   }, [query, page]);
 
   const onHandleSubmit = newQuery => {
+    if (newQuery === query) {
+      return;
+    }
     setQuery(newQuery);
     setPage(1);
     setState({
