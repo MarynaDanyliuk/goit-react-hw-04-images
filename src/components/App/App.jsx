@@ -6,7 +6,7 @@ import { Searchbar } from '../Searchbar/Searchbar';
 import { ImageGallery } from '../ImageGallery/ImageGallery';
 import { Button } from '../Button/Button';
 import { LoaderWatch } from '../Loader/Loader';
-import Modal from '../Modal/Modal';
+import { Modal } from '../Modal/Modal';
 
 import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
 
@@ -41,6 +41,13 @@ export const App = () => {
       .catch(error => console.log('Error'));
   }, [query, page]);
 
+  // useEffect(() => {
+  //   // if (state.showModal === false) {
+  //   //   return;
+  //   // }
+  //   // document.addEventListener('keydown', onToggleModal);
+  // }, [state.showModal]);
+
   const onHandleSubmit = query => {
     setQuery(query);
     setPage(1);
@@ -55,9 +62,10 @@ export const App = () => {
     console.log('click', page);
   };
 
-  const showImage = () => {
+  const showImage = ({ largeImageURL, webformatURL, id }) => {
     console.log('кликнули img');
-    const { largeImageURL, webformatURL, id } = images;
+    document.addEventListener('keydown', onToggleModal);
+    // const { largeImageURL, webformatURL, id } = images;
     setState({
       imageDetails: {
         largeImageURL,
@@ -68,32 +76,31 @@ export const App = () => {
     });
   };
 
-  const onToggleModal = event => {
+  const onToggleModal = ({ target, currentTarget, code }) => {
     console.log('кликнули toggle модального окна');
-    setState(({ showModal }) => ({
-      showModal: !showModal,
-    }));
-  };
 
-  // const handleToggle = ({ target, currentTarget, code }) => {
-  //   if (target === currentTarget || code === 'Escape') {
-  //     this.props.handleToggle(this.state);
-  //   }
-  // };
+    if (target === currentTarget || code === 'Escape') {
+      setState(({ showModal }) => ({
+        showModal: !showModal,
+      }));
+    }
+
+    document.removeEventListener('keydown', onToggleModal);
+  };
 
   return (
     <Container>
       <Searchbar onSubmit={onHandleSubmit} />
       {state.loading && <LoaderWatch />}
-      {images && <ImageGallery images={images} showImage={() => showImage()} />}
+      {images && <ImageGallery images={images} showImage={showImage} />}
       {Boolean(images.length) && <Button handelClick={onLoadMore} />}
       {/* {Boolean(images.length) && images.length < total && (
         <Button handelClick={onLoadMore} />
       )} */}
 
       {state.showModal && (
-        <Modal handleToggle={() => onToggleModal()}>
-          <ImageGalleryItem showImage={() => showImage()} />
+        <Modal handleToggle={onToggleModal}>
+          <ImageGalleryItem showImage={showImage} {...state.imageDetails} />
         </Modal>
       )}
     </Container>

@@ -12,7 +12,7 @@ export const ImageGallery = ({ images, showImage }) => {
           largeImageURL={largeImageURL}
           webformatURL={webformatURL}
           key={id}
-          showImage={() => showImage({ largeImageURL, webformatURL, id })}
+          showImage={showImage}
         />
       ))}
     </Gallery>
