@@ -1,4 +1,4 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
 
@@ -19,13 +19,13 @@ export const ImageGallery = ({ images, showImage }) => {
   );
 };
 
-// ImageGallery.propTypes = {
-//   images: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       largeImageURL: PropTypes.node,
-//       webformatURL: PropTypes.node,
-//       id: PropTypes.number,
-//     })
-//   ),
-//   showImage: PropTypes.func.isRequired,
-// };
+ImageGallery.propTypes = {
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      largeImageURL: PropTypes.node,
+      webformatURL: PropTypes.node,
+      id: PropTypes.number,
+    })
+  ),
+  showImage: PropTypes.func.isRequired,
+};

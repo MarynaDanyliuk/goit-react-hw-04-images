@@ -6,9 +6,9 @@ import { Searchbar } from '../Searchbar/Searchbar';
 import { ImageGallery } from '../ImageGallery/ImageGallery';
 import { Button } from '../Button/Button';
 import { LoaderWatch } from '../Loader/Loader';
-// import Modal from '../Modal/Modal';
+import Modal from '../Modal/Modal';
 
-// import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
+import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
 
 import searchImages from 'apiServise/apiImages';
 
@@ -55,30 +55,50 @@ export const App = () => {
     console.log('click', page);
   };
 
+  const showImage = () => {
+    console.log('кликнули img');
+    const { largeImageURL, webformatURL, id } = images;
+    setState({
+      imageDetails: {
+        largeImageURL,
+        webformatURL,
+        id,
+      },
+      showModal: true,
+    });
+  };
+
+  const onToggleModal = event => {
+    console.log('кликнули toggle модального окна');
+    setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
+  };
+
+  // const handleToggle = ({ target, currentTarget, code }) => {
+  //   if (target === currentTarget || code === 'Escape') {
+  //     this.props.handleToggle(this.state);
+  //   }
+  // };
+
   return (
     <Container>
       <Searchbar onSubmit={onHandleSubmit} />
       {state.loading && <LoaderWatch />}
-      {images && <ImageGallery images={images} />}
+      {images && <ImageGallery images={images} showImage={() => showImage()} />}
       {Boolean(images.length) && <Button handelClick={onLoadMore} />}
       {/* {Boolean(images.length) && images.length < total && (
         <Button handelClick={onLoadMore} />
       )} */}
 
-      {/* {showModal && (
+      {state.showModal && (
         <Modal handleToggle={() => onToggleModal()}>
           <ImageGalleryItem showImage={() => showImage()} />
         </Modal>
-      )} */}
+      )}
     </Container>
   );
 };
-
-// const { query, page } = state;
-// fetchImages(query, page);
-// setImages(({ images }) => ({
-//   images: [...images, ...fetchImages(query, page)],
-// }));
 
 // const onLoadMore = () => {
 //   setState(prevState => ({ page: prevState.page + 1 }));
@@ -112,17 +132,6 @@ export const App = () => {
 //   }
 //   return setState({ query, page: 1 });
 // };
-
-// useEffect(() => {
-//   const { query, page } = state;
-//   setState({
-//     query: state.query,
-//     page: state.page,
-//   });
-//   const data = searchImages(query, page);
-// setState({ total: data.totalHits });
-//   setState(({ images }) => ({ images: [...images, ...data.hits] }));
-// }, []);
 
 // componentDidUpdate(prevProps, prevState) {
 //   const { query, page } = this.state;
