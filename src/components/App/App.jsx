@@ -16,23 +16,26 @@ export const App = () => {
   const [images, setImages] = useState([]);
   const [query, setQuery] = useState('');
   const [page, setPage] = useState(1);
-  // const [total, setTotal] = useState(0);
 
   const [state, setState] = useState({
     loading: false,
-    // total: 0,
+    total: 0,
     showModal: false,
     imageDetails: null,
   });
   useEffect(() => {
     console.log('запускаем useEffect');
-
     if (query === '') {
       return;
     }
     const data = searchImages(query, page);
     data
-      .then(response => setImages(response.hits))
+      .then(response => {
+        setImages(response.hits);
+        setState({
+          total: response.totalHits,
+        });
+      })
       .then(
         setState({
           loading: false,
@@ -40,13 +43,6 @@ export const App = () => {
       )
       .catch(error => console.log('Error'));
   }, [query, page]);
-
-  // useEffect(() => {
-  //   // if (state.showModal === false) {
-  //   //   return;
-  //   // }
-  //   // document.addEventListener('keydown', onToggleModal);
-  // }, [state.showModal]);
 
   const onHandleSubmit = query => {
     setQuery(query);
@@ -58,14 +54,13 @@ export const App = () => {
 
   const onLoadMore = () => {
     setPage(prevState => page + 1);
-
     console.log('click', page);
   };
 
   const showImage = ({ largeImageURL, webformatURL, id }) => {
     console.log('кликнули img');
     document.addEventListener('keydown', onToggleModal);
-    // const { largeImageURL, webformatURL, id } = images;
+
     setState({
       imageDetails: {
         largeImageURL,
@@ -93,10 +88,9 @@ export const App = () => {
       <Searchbar onSubmit={onHandleSubmit} />
       {state.loading && <LoaderWatch />}
       {images && <ImageGallery images={images} showImage={showImage} />}
-      {Boolean(images.length) && <Button handelClick={onLoadMore} />}
-      {/* {Boolean(images.length) && images.length < total && (
+      {Boolean(images.length) && images.length < state.total && (
         <Button handelClick={onLoadMore} />
-      )} */}
+      )}
 
       {state.showModal && (
         <Modal handleToggle={onToggleModal}>
@@ -154,7 +148,3 @@ export const App = () => {
 //     this.fetchImages();
 //   }
 // }
-
-// componentWillUnmount() {
-//   window.removeEventListener('click', this.onToggleModal);
-//   window.removeEventListener('click', this.showImage);

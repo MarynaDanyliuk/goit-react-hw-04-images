@@ -1,5 +1,4 @@
 import React from 'react';
-// import { useState, useEffect } from 'react';
 
 import { createPortal } from 'react-dom';
 
@@ -10,19 +9,6 @@ import { ModalOverlay, ModalView } from '../Modal/Modal.styled';
 const modalRoot = document.querySelector('#modal-root');
 
 export const Modal = ({ children, handleToggle }) => {
-  // const [showModal, setModal] = useState(false);
-  // useEffect(() => {
-  //   console.log('запускаем useEffect');
-  //   handleToggle(showModal);
-  // }, [showModal]);
-
-  // const handleToggle = ({ target, currentTarget, code }) => {
-  //   console.log('кликнули toggle модального окна');
-  //   if (target === currentTarget || code === 'Escape') {
-  //     setModal(true);
-  //   }
-  // };
-
   return createPortal(
     <ModalOverlay onClick={handleToggle}>
       <ModalView>{children}</ModalView>
@@ -30,6 +16,25 @@ export const Modal = ({ children, handleToggle }) => {
     modalRoot
   );
 };
+
+Modal.propTypes = {
+  handleToggle: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
+};
+
+// const [showModal, setModal] = useState(false);
+// useEffect(() => {
+//   console.log('запускаем useEffect');
+//   handleToggle(showModal);
+// }, [showModal]);
+
+// const handleToggle = ({ target, currentTarget, code }) => {
+//   console.log('кликнули toggle модального окна');
+//   if (target === currentTarget || code === 'Escape') {
+//     setModal(true);
+//   }
+// };
+// ___________________________________________________________
 // componentDidMount() {
 //   document.addEventListener('keydown', this.handleToggle);
 // }
@@ -47,8 +52,3 @@ export const Modal = ({ children, handleToggle }) => {
 // const { children } = this.props;
 
 // export default Modal;
-
-Modal.propTypes = {
-  handleToggle: PropTypes.func.isRequired,
-  children: PropTypes.node.isRequired,
-};
