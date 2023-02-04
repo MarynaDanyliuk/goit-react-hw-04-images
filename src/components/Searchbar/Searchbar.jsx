@@ -23,7 +23,6 @@ export const Searchbar = ({ onSubmit }) => {
   const handleSubmit = event => {
     event.preventDefault();
     onSubmit(newQuery);
-    setQuery(newQuery);
   };
 
   return (

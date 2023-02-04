@@ -22,9 +22,9 @@ export const ImageGallery = ({ images, showImage }) => {
 ImageGallery.propTypes = {
   images: PropTypes.arrayOf(
     PropTypes.shape({
-      largeImageURL: PropTypes.node,
-      webformatURL: PropTypes.node,
-      id: PropTypes.number,
+      largeImageURL: PropTypes.string.isRequired,
+      webformatURL: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
     })
   ),
   showImage: PropTypes.func.isRequired,
